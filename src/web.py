@@ -60,7 +60,8 @@ def servestatic(localdir,matcher="/static/.*"):
 		except FileNotFoundError:
 			self.set_header("Content-Type", "text/plain")
 			self.set_status(404,"Not available")
-			print("Static file not found: ".format(localfile))
+			logging.info("Static file not found: {}".format(
+				localfile))
 			self.write("File not found")
 	_myrouter.addroute(matcher,_handler)
 
@@ -82,4 +83,3 @@ def _demo(port=8200):
 
 if __name__=='__main__':
 	_demo()
-
