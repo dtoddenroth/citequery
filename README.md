@@ -1,6 +1,8 @@
 
 # citequery
 
+![License](https://img.shields.io/github/license/dtoddenroth/citequery)
+
 Query citations of a set of [Pubmed](https://pubmed.ncbi.nlm.nih.gov/) articles. 
 
 | browser view | feed view ([Thunderbird](https://www.thunderbird.net)) |
