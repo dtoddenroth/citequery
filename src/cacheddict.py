@@ -18,7 +18,8 @@ class CachedDict(dict):
 		except (FileNotFoundError,JSONDecodeError):
 			if self.verbose:
 				print("No records read from {}.".format(
-					self.filename))
+					self.filename),
+					flush=True)
 	def save(self):
 		with open(self.filename,"w+") as f:
 			f.write(dumps({k:v for k,v in self.items()}))
@@ -26,4 +27,3 @@ class CachedDict(dict):
 			print("{} record(s) written to {}.".format(
 				len(self.items()),self.filename),
 				flush=True)
-
