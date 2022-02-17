@@ -3,6 +3,8 @@
 from json import loads, dumps
 from json.decoder import JSONDecodeError
 
+_printf = lambda mes,*parms: print(mes.format(*parms),flush=True)
+
 class CachedDict(dict):
 	def __init__(self,filename,verbose=False):
 		self.filename = filename
@@ -12,18 +14,16 @@ class CachedDict(dict):
 		try:
 			self.update(**loads(open(self.filename).read()))
 			if self.verbose:
-				print("{} records(s) read from {}.".format(
+				_printf("{} records(s) read from {}.",
 					len(self.items()),self.filename),
-					flush=True)
 		except (FileNotFoundError,JSONDecodeError):
 			if self.verbose:
-				print("No records read from {}.".format(
-					self.filename),
-					flush=True)
+				_printf("No records read from {}.",
+					self.filename)
 	def save(self):
 		with open(self.filename,"w+") as f:
 			f.write(dumps({k:v for k,v in self.items()}))
 		if self.verbose:
-			print("{} record(s) written to {}.".format(
-				len(self.items()),self.filename),
-				flush=True)
+			_printf("{} record(s) written to {}.",
+				len(self.items()),self.filename)
+

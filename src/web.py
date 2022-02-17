@@ -20,7 +20,6 @@ run()
 """
 
 import logging
-from urllib.parse import unquote
 from mimetypes import _types_map_default as mimemap
 from tornado import web, httpserver, ioloop
 
@@ -83,3 +82,4 @@ def _demo(port=8200):
 
 if __name__=='__main__':
 	_demo()
+
