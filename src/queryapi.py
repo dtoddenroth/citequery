@@ -72,13 +72,16 @@ def pubmedsearch(query,retmax=retmax):
 def pubmedcitations(pmids,retmax=retmax):
 	queryparms = dict(dbfrom="pubmed",linkname="pubmed_pubmed_citedin",
 		retmax=retmax,retmode="xml")
-	moregetparms = "".join([f"&id={pmid}" for pmid in pmids])
-	etree = queryandparse("elink.fcgi",moregetparms,**queryparms)
-	if etree is None:
-		return {}
-	return {el2int(linkset.find(".//IdList/Id")) : 
-	 		getids(linkset.find(".//LinkSetDb")) 
-	 		for linkset in etree.findall(".//LinkSet")}
+	def citationchunk(localpmids):
+		moregetparms = "".join([f"&id={pmid}" for pmid in localpmids])
+		etree = queryandparse("elink.fcgi",moregetparms,**queryparms)
+		if etree is None:
+			return []
+		return [(el2int(linkset.find(".//IdList/Id")), 
+	 		getids(linkset.find(".//LinkSetDb")))
+	 		for linkset in etree.findall(".//LinkSet")]
+	rows = chunkedmap(citationchunk,pmids,chunksize)
+	return {row[0]:row[1] for row in rows}
 
 def chunkedpubmedrecords(pmids):
 	def pubmedrecords(pmids):
